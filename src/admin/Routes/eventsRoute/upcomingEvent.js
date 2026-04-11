@@ -14,13 +14,13 @@ eventRouter.post("/admin/upcomingevent", adminAuth,upload.fields([
 	try {
 		
 		const { scheduledDate, eventName, speaker } = req.body;
-		const upcomingEventsBannerPath = req.files?.upcomingEventsBanner?.[0]?.path;
-		if (!upcomingEventsBannerPath) {
+		const upcomingEventsBannerBuffer = req.files?.upcomingEventsBanner?.[0]?.buffer;
+		if (!upcomingEventsBannerBuffer) {
 			return res.status(400).json({ message: "Banner of the upcoming event is required" });
 
 		}
 		const upcomingEventCloudinary = await uploadOnCloudinary(
-            upcomingEventsBannerPath,
+            upcomingEventsBannerBuffer,
         );
         const eventData = new eventsModel({
             photoUrl:upcomingEventCloudinary.url,

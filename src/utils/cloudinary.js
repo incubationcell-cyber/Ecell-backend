@@ -1,5 +1,4 @@
 const cloudinary = require("cloudinary").v2;
-const fs = require("fs");
 
 // Configuration
 cloudinary.config({
@@ -8,22 +7,28 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (buffer, options = {}) => {
     try {
-        if (!localFilePath) return null;
+        if (!buffer) return null;
 
-        const response = await cloudinary.uploader.upload(localFilePath, {
-            resource_type: "auto",
+        return new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                    resource_type: "auto",
+                    ...options,
+                },
+                (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+
+            uploadStream.end(buffer);
         });
-
-        await fs.promises.unlink(localFilePath);
-
-        return response;
     } catch (error) {
-        if (localFilePath && fs.existsSync(localFilePath)) {
-            await fs.promises.unlink(localFilePath);
-        }
-
         throw error;
     }
 };

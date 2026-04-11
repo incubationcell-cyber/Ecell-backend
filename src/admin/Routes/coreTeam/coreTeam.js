@@ -37,12 +37,12 @@ coreTeamRouter.post("/admin/coreteam/addNewMember", adminAuth,upload.fields([
              });
          }
 
-		//taking the path of image from the multer and then uploading on the cloudinary
-		const memberImagePath = await req.files?.memberImage?.[0]?.path;
-		if (!memberImagePath) {
+		//taking the buffer of image from the multer and then uploading on the cloudinary
+		const memberImageBuffer = req.files?.memberImage?.[0]?.buffer;
+		if (!memberImageBuffer) {
 			return res.status(400).json({ message: "Member Image is Required!!" });
 		}
-		const memberImageCloudinary = await uploadOnCloudinary(memberImagePath);
+		const memberImageCloudinary = await uploadOnCloudinary(memberImageBuffer);
 		
 
        

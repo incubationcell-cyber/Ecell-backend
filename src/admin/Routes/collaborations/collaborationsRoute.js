@@ -69,13 +69,13 @@ collaborationRouter.post(
                     message: "All fields are mandatory",
                 });
             }
-			const collaborationImageLocalPath = req.files?.collaborationImage?.[0]?.path;
-			if (!collaborationImageLocalPath) {
+			const collaborationImageBuffer = req.files?.collaborationImage?.[0]?.buffer;
+			if (!collaborationImageBuffer) {
                 return res.status(409).json({
                     message: "Collaboration Event Image is required!!",
                 });
             }
-			const collaborationImage = await uploadOnCloudinary(collaborationImageLocalPath);
+			const collaborationImage = await uploadOnCloudinary(collaborationImageBuffer);
             const collaborationData = await collaborationModel.create({
                 photoUrl:collaborationImage.url,
                 name,
