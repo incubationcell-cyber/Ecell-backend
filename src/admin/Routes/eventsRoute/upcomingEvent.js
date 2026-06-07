@@ -68,4 +68,30 @@ eventRouter.patch("/admin/upcomingevent/:_id", adminAuth, async (req, res) => {
 
 	}
 })
+
+//deleting of an event
+eventRouter.delete(
+  "/admin/upcomingevent/:_id",
+  adminAuth,
+  async (req, res) => {
+    try {
+      const data = await eventData.findByIdAndDelete(req.params._id);
+
+      if (!data) {
+        return res.status(404).json({
+          message: "Event not found"
+        });
+      }
+
+      return res.status(200).json({
+        message: "Event Deleted Successfully"
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Something went wrong while deleting the event",
+        error: error.message
+      });
+    }
+  }
+);
 module.exports = eventRouter;
