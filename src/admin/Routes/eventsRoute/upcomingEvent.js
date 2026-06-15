@@ -88,7 +88,7 @@ eventRouter.delete(
       });
     } catch (error) {
       return res.status(500).json({
-        message: "Something went wrong while deleting the event",
+        message: "Something went wrong while deleting the event + `${error.message}`",
         error: error.message
       });
     }
