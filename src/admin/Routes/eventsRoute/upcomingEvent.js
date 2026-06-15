@@ -75,7 +75,7 @@ eventRouter.delete(
   adminAuth,
   async (req, res) => {
     try {
-      const data = await eventData.findByIdAndDelete(req.params._id);
+      const data = await eventsModel.findByIdAndDelete(req.params._id);
 
       if (!data) {
         return res.status(404).json({
@@ -88,8 +88,8 @@ eventRouter.delete(
       });
     } catch (error) {
       return res.status(500).json({
-        message: `Something went wrong while deleting the event: ${error.message}`,,
-        error: error.message
+        message: `Something went wrong while deleting the event: ${error.message}`,
+        error: error.message,
       });
     }
   }
